@@ -9,9 +9,11 @@ class PartidoRepository(private val partidoDao: PartidoDAO){
 
     val allPartido : LiveData<List<Partido>> = partidoDao.getAllPartido()
 
-    @WorkerThread
-    fun  getPartidoById(idPartido:Int): LiveData<List<Partido>> = partidoDao.getPartidoById(idPartido)
+    //@WorkerThread
+    //fun  getPartidoById(idPartido:Int): LiveData<List<Partido>> = partidoDao.getPartidoById(idPartido)
 
     @WorkerThread
-    suspend fun insertPartido(partido:Partido) = partidoDao.insertPartido(partido)
+    suspend fun insertPartido(partido:Partido) {
+        partidoDao.insertPartido(partido)
+    }
 }

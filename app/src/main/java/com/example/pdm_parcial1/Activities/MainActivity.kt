@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         partidoViewModel = ViewModelProviders.of(this).get(PartidoViewModel::class.java)
 
         partidoViewModel.allPartidos.observe(this, Observer { partidos ->
-            partidos.let { adapter.setPartidos(it) }
+            partidos?.let { adapter.setPartidos(it) }
         })
 
     }
@@ -69,6 +69,8 @@ class MainActivity : AppCompatActivity() {
 
         if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK){
             data?.let {
+
+                //Aqui es donde debo pasar los datos de los put extra
                 val partido = Partido(1,it.getStringExtra(NewPartidoActivity.EXTRA_REPLY),"ascaf",23,32)
                 partidoViewModel.insertPartido(partido)
             }

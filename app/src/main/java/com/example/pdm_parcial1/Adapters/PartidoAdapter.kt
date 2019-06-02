@@ -23,9 +23,7 @@ class PartidoAdapter internal constructor(context: Context) : RecyclerView.Adapt
         return PartidoViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int {
-        return partidos.size
-    }
+
 
     override fun onBindViewHolder(holder: PartidoViewHolder, position: Int) {
         val current = partidos[position]
@@ -35,5 +33,9 @@ class PartidoAdapter internal constructor(context: Context) : RecyclerView.Adapt
     internal fun setPartidos(partidos: List<Partido>){
         this.partidos = partidos
         notifyDataSetChanged()
+    }
+
+    override fun getItemCount(): Int {
+        return partidos.size
     }
 }

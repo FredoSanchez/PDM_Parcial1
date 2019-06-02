@@ -28,9 +28,9 @@ public abstract class PartidoRoomDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     PartidoRoomDatabase::class.java,
-                    "Book_database"
-                ).fallbackToDestructiveMigration()
-                        .addCallback(PartidoDatabaseCallback(scope))
+                    "Partidos_database"
+                )//.fallbackToDestructiveMigration() //WHAT is this???
+                    .addCallback(PartidoDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
                 return instance
@@ -51,7 +51,9 @@ public abstract class PartidoRoomDatabase : RoomDatabase() {
         suspend private fun populateDatabase(partidoDao: PartidoDAO) {
             partidoDao.deleteAllPartido()
 
-            var partido = Partido(0,"UCA","ESEN", 23,20)
+            var partido = Partido(4,"UCA","ESEN", 23,20)
+            partidoDao.insertPartido(partido)
+            partido = Partido(2,"Uasafs","fsav", 224,250)
             partidoDao.insertPartido(partido)
         }
 

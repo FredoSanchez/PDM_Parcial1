@@ -26,7 +26,9 @@ class PartidoViewModel(application: Application) : AndroidViewModel(application)
         partidoRepository.insertPartido(partido)
     }
 
+    /*
     fun getPartidoById(idPartido: Int): LiveData<List<Partido>>{
         return partidoRepository.getPartidoById(idPartido)
     }
+    */
 }
