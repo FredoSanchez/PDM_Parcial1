@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
             val intent = Intent(this@MainActivity, NewPartidoActivity::class.java)
             startActivityForResult(intent, newWordActivityRequestCode)
         }
