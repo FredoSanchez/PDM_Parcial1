@@ -16,7 +16,7 @@ public abstract class PartidoRoomDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: PartidoRoomDatabase? = null
 
-        fun getDatabase(context: Context, scope: CoroutineScope): PartidoRoomDatabase {
+        fun getDatabase(context: Context): PartidoRoomDatabase {
             val tempInstance = INSTANCE
             if (tempInstance != null) {
                 return tempInstance
