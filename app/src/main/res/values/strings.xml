@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">PDM_Parcial1</string>
     <string name="action_settings">Settings</string>
+    <string name="text_team_a">Team A points</string>
+    <string name="action_3_points">3 Points</string>
+    <string name="action_2_points">2 Points</string>
+    <string name="action_free_throw">Free throw</string>
+    <string name="text_team_b">Team B points</string>
+    <string name="action_save">Save</string>
 </resources>

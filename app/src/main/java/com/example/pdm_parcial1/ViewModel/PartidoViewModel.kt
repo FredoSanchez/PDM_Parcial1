@@ -17,7 +17,7 @@ class PartidoViewModel(application: Application) : AndroidViewModel(application)
     val allPartidos : LiveData<List<Partido>>
 
     init {
-        val partidosDao = PartidoRoomDatabase.getDatabase(application).partidoDao()
+        val partidosDao = PartidoRoomDatabase.getDatabase(application, viewModelScope).partidoDao()
         partidoRepository = PartidoRepository(partidosDao)
         allPartidos = partidoRepository.allPartido
     }
