@@ -19,18 +19,21 @@ abstract class PartidoRoomDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: PartidoRoomDatabase? = null
 
-        fun getDatabase(context: Context, scope: CoroutineScope): PartidoRoomDatabase {
-            return INSTANCE ?: synchronized(this){
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    PartidoRoomDatabase::class.java,
-                    "partido_database"
-                )
-                    .fallbackToDestructiveMigration()
+        fun getInstance(
+            context: Context,
+            scope: CoroutineScope
+        ):PartidoRoomDatabase {
+            val tempInstance = INSTANCE
+            if (tempInstance != null) {
+                return tempInstance
+            }
+            synchronized(this) {
+                val instance = Room
+                    .databaseBuilder(context,PartidoRoomDatabase::class.java,"PartidoDB")
                     .addCallback(PartidoDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
-                instance
+                return instance
             }
         }
 
@@ -48,9 +51,9 @@ abstract class PartidoRoomDatabase : RoomDatabase() {
         suspend fun populateDatabase(partidoDao: PartidoDAO) {
             partidoDao.deleteAllPartidos()
 
-            var partido = Partido(4,"UCA","ESEN", 23,20)
+            var partido = Partido("UCA","ESEN", 23,20)
             partidoDao.insertPartido(partido)
-            partido = Partido(2,"Uasafs","fsav", 224,250)
+            partido = Partido("Uasafs","fsav", 224,250)
             partidoDao.insertPartido(partido)
         }
 

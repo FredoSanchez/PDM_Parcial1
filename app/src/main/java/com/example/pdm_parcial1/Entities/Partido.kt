@@ -6,9 +6,10 @@ import androidx.room.PrimaryKey
 
 @Entity (tableName = "table_partido")
 data class Partido(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "Id_Partido") val Id_Partido: Int,
     @ColumnInfo(name = "EquipoA") val EquipoA: String,
     @ColumnInfo(name = "EquipoB") val EquipoB: String,
     @ColumnInfo(name = "PuntosEquipoA") val PuntosEquipoA: Int,
     @ColumnInfo(name = "PuntosEquipoB") val PuntosEquipoB: Int
-)
+){
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "Id_Partido") val Id_Partido: Int = 0
+}

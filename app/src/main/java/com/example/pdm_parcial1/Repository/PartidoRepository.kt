@@ -7,10 +7,10 @@ import com.example.pdm_parcial1.dao.PartidoDAO
 
 class PartidoRepository(private val partidoDao: PartidoDAO){
 
-    val allPartidos : LiveData<List<Partido>> = partidoDao.getAllPartidos()
+    fun getAllPartido(): LiveData<List<Partido>> = partidoDao.getAllPartidos()
 
     //@WorkerThread
-    //fun  getPartidoById(idPartido:Int): LiveData<List<Partido>> = partidoDao.getPartidoById(idPartido)
+    fun  getPartidoById(idPartido:Int): LiveData<List<Partido>> = partidoDao.getPartidoById(idPartido)
 
     @WorkerThread
     suspend fun insertPartido(partido:Partido) {

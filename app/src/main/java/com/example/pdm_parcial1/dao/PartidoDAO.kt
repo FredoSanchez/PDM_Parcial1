@@ -11,8 +11,8 @@ interface PartidoDAO {
     @Query("SELECT * FROM table_partido order by Id_Partido ASC")
     fun getAllPartidos (): LiveData<List<Partido>>
 
-    //@Query("SELECT * FROM table_partido WHERE Id_Partido = :idPartido")
-    //fun getPartidoById(idPartido: Int): LiveData<List<Partido>>
+    @Query("SELECT * FROM table_partido WHERE Id_Partido = :idPartido")
+    fun getPartidoById(idPartido: Int): LiveData<List<Partido>>
 
     @Insert
     suspend fun insertPartido(partido : Partido)
