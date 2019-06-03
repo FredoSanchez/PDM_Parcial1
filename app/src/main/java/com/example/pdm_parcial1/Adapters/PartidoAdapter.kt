@@ -7,34 +7,40 @@ import android.view.ViewGroup
 import android.view.ViewParent
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pdm_parcial1.Activities.PartidoDTO
 import com.example.pdm_parcial1.Entities.Partido
 import com.example.pdm_parcial1.R
+import kotlinx.android.synthetic.main.recyclerview_item.view.*
 
-class PartidoAdapter internal constructor(context: Context) : RecyclerView.Adapter<PartidoAdapter.PartidoViewHolder>(){
+class PartidoAdapter(context: Context, val clickListener: (PartidoDTO) -> Unit)
+    :RecyclerView.Adapter<PartidoAdapter.PartidoViewHolder>() {
+
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var partidos = emptyList<Partido>()
-
-    inner class PartidoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val partidoItemView : TextView = itemView.findViewById(R.id.tv_Equipos)
-    }
+    private var partido = emptyList<PartidoDTO>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartidoViewHolder {
-        val itemView = inflater.inflate(R.layout.recyclerview_item, parent, false)
+        val itemView = inflater.inflate(R.layout.recyclerview_item,parent,false)
         return PartidoViewHolder(itemView)
     }
 
-
+    override fun getItemCount() = partido.size
 
     override fun onBindViewHolder(holder: PartidoViewHolder, position: Int) {
-        val current = partidos[position]
-        holder.partidoItemView.text = current.EquipoA
+        val current = partido[position]
+
+        holder.bind(current,clickListener)
     }
 
-    internal fun setPartidos(partidos: List<Partido>){
-        this.partidos = partidos
-        notifyDataSetChanged()
+    fun setPartido(partido: List<PartidoDTO>){
+        this.partido = partido
     }
 
-    override fun getItemCount(): Int = partidos.size
+    inner class PartidoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+
+        fun bind(item: PartidoDTO,clickListener: (PartidoDTO) -> Unit) = with(itemView){
+            item_view_partido.text = item.equipoA + " vs " + item.equipoB
+            this.setOnClickListener { clickListener(item) }
+        }
+    }
 
 }

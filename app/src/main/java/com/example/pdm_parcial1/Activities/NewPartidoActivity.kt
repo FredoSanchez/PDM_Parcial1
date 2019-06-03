@@ -12,28 +12,22 @@ import kotlinx.android.synthetic.main.activity_new_partido.*
 
 class NewPartidoActivity : AppCompatActivity() {
 
-    private lateinit var editPartidoView : EditText
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_partido)
-        editPartidoView = findViewById(R.id.et_TeamAName)
 
-        val button = findViewById<Button>(R.id.bt_save)
-        button.setOnClickListener{
-            val replyIntent = Intent()
-            if(TextUtils.isEmpty(editPartidoView.text)){
-                setResult(Activity.RESULT_CANCELED, replyIntent)
-            } else {
-                val teamAName = editPartidoView.text.toString()
-                replyIntent.putExtra(EXTRA_REPLY, teamAName)
-                setResult(Activity.RESULT_OK, replyIntent)
-            }
-            finish()
-        }
+        init()
     }
 
-    companion object {
-        const val EXTRA_REPLY = "com.example.android.wordlistsql.REPLY"
+    fun init(){
+
+        var equiposBundle = Bundle()
+        var equipos: PartidoDTO
+        btn_iniciar.setOnClickListener {
+            equipos = PartidoDTO(name_equipoA.text.toString(),name_equipoB.text.toString(),0,0)
+            equiposBundle.putParcelable("equipos",equipos)
+            startActivity(Intent(this, JuegoActivity::class.java).putExtras(equiposBundle))
+            finish()
+        }
     }
 }

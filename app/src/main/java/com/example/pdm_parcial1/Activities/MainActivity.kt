@@ -3,10 +3,12 @@ package com.example.pdm_parcial1.Activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,66 +23,66 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     private lateinit var partidoViewModel: PartidoViewModel
 
-    private val newPartidoActivityRequestCode = 1
-
+    companion object {
+        const val newPartidoActivityRequestCode = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-
-
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = PartidoAdapter(this)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
         partidoViewModel = ViewModelProviders.of(this).get(PartidoViewModel::class.java)
 
-        partidoViewModel.allPartidos.observe(this, Observer { partidos ->
-            partidos?.let { adapter.setPartidos(it) }
-        })
+        val partidos: LiveData<List<Partido>> = partidoViewModel.getAllPartidos()
 
-        fab.setOnClickListener {
+        val partidoObserver = Observer<List<Partido>>{ lista ->
+            if(lista.size > 0){
+                setUpView(getDTOList(lista))
+            }else{
+                Log.d("prueba","no hay tags")
+            }
+        }
+
+        partidos.observe(this,partidoObserver)
+
+        fab.setOnClickListener { view ->
             val intent = Intent(this@MainActivity, NewPartidoActivity::class.java)
             startActivityForResult(intent, newPartidoActivityRequestCode)
         }
-
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+    fun getDTOList(partidos: List<Partido>): ArrayList<PartidoDTO>{
+        val partidoDTOList = ArrayList<PartidoDTO>()
+
+        for(i in partidos){
+            partidoDTOList.add(PartidoDTO(i.EquipoA,i.EquipoB,i.PuntosEquipoA,i.PuntosEquipoB))
+        }
+
+        return partidoDTOList
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+    fun setUpView(partido: ArrayList<PartidoDTO>){
+
+        var viewManager = LinearLayoutManager(this)
+
+        lateinit var viewAdapter: PartidoAdapter
+
+        viewAdapter = PartidoAdapter(this,{ partidoItem: PartidoDTO -> itemClickedPortrait(partidoItem)})
+
+        viewAdapter.setPartido(partido)
+
+        partido_rv.apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
-        super.onActivityResult(requestCode, resultCode, intentData)
+    fun itemClickedPortrait(partido: PartidoDTO){
 
-        if (requestCode == newPartidoActivityRequestCode && resultCode == Activity.RESULT_OK){
-            intentData?.let { data ->
+        val partidoBundle = Bundle()
+        partidoBundle.putParcelable("partido",partido)
 
-                //Aqui es donde debo pasar los datos de los put extra
-                val partido = Partido(1,data.getStringExtra(NewPartidoActivity.EXTRA_REPLY),"ascaf",23,32)
-                partidoViewModel.insertPartido(partido)
-            }
-
-            }else {
-            Toast.makeText(applicationContext,"Nada...",Toast.LENGTH_LONG).show()
-        }
-
+        startActivity(Intent(this, PartidoDetailActivity::class.java).putExtras(partidoBundle))
     }
 }
