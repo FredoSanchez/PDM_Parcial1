@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.pdm_parcial1.Entities.Partido
 import com.example.pdm_parcial1.R
 import com.example.pdm_parcial1.ViewModel.PartidoViewModel
+import com.example.pdm_parcial1.ViewModel.ScoreViewModel
 import kotlinx.android.synthetic.main.activity_juego.*
 
 class JuegoActivity : AppCompatActivity() {
