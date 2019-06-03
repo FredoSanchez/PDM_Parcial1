@@ -1,6 +1,7 @@
 package com.example.pdm_parcial1.Database
 
 import android.content.Context
+import android.icu.util.Calendar
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -49,6 +50,7 @@ abstract class PartidoRoomDatabase : RoomDatabase() {
         }
 
         suspend fun populateDatabase(partidoDao: PartidoDAO) {
+
             partidoDao.deleteAllPartidos()
 
             var partido = Partido("UCA","ESEN", 23,20)
