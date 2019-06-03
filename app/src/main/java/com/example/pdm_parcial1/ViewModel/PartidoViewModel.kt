@@ -11,20 +11,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PartidoViewModel(application: Application) : AndroidViewModel(application){
-    private val partidoRepository: PartidoRepository
+    private var partidoRepository: PartidoRepository?= null
 
-    val allPartidos : LiveData<List<Partido>>
+    //val allPartidos : LiveData<List<Partido>>
 
     init {
-        val partidosDao = PartidoRoomDatabase.getDatabase(application, viewModelScope).partidoDao()
+        val partidosDao = PartidoRoomDatabase.getInstance(application, viewModelScope).partidoDao()
         partidoRepository = PartidoRepository(partidosDao)
-        allPartidos = partidoRepository.allPartidos
     }
 
     fun insertPartido(partido: Partido) = viewModelScope.launch(Dispatchers.IO){
-        partidoRepository.insertPartido(partido)
+        partidoRepository!!.insertPartido(partido)
     }
 
+    fun getAllPartidos(): LiveData<List<Partido>> = partidoRepository!!.getAllPartido()
     /*
     fun getPartidoById(idPartido: Int): LiveData<List<Partido>>{
         return partidoRepository.getPartidoById(idPartido)
