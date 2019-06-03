@@ -34,6 +34,6 @@ class NewPartidoActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_REPLY = "Hello"
+        const val EXTRA_REPLY = "com.example.android.wordlistsql.REPLY"
     }
 }

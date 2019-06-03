@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Database(entities = arrayOf(Partido::class),version = 1)
-public abstract class PartidoRoomDatabase : RoomDatabase() {
+abstract class PartidoRoomDatabase : RoomDatabase() {
     abstract fun partidoDao() : PartidoDAO
 
     companion object {
@@ -20,20 +20,17 @@ public abstract class PartidoRoomDatabase : RoomDatabase() {
         private var INSTANCE: PartidoRoomDatabase? = null
 
         fun getDatabase(context: Context, scope: CoroutineScope): PartidoRoomDatabase {
-            val tempInstance = INSTANCE
-            if (tempInstance != null) {
-                return tempInstance
-            }
-            synchronized(this) {
+            return INSTANCE ?: synchronized(this){
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     PartidoRoomDatabase::class.java,
-                    "Partidos_database"
-                )//.fallbackToDestructiveMigration() //WHAT is this???
+                    "partido_database"
+                )
+                    .fallbackToDestructiveMigration()
                     .addCallback(PartidoDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
-                return instance
+                instance
             }
         }
 
@@ -48,8 +45,8 @@ public abstract class PartidoRoomDatabase : RoomDatabase() {
             }
         }
 
-        suspend private fun populateDatabase(partidoDao: PartidoDAO) {
-            partidoDao.deleteAllPartido()
+        suspend fun populateDatabase(partidoDao: PartidoDAO) {
+            partidoDao.deleteAllPartidos()
 
             var partido = Partido(4,"UCA","ESEN", 23,20)
             partidoDao.insertPartido(partido)

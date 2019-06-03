@@ -3,7 +3,6 @@ package com.example.pdm_parcial1.Activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
@@ -21,19 +20,18 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var partidoViewModel: PartidoViewModel
-    companion object {
-        const val newWordActivityRequestCode = 1
-    }
+
+    private val newPartidoActivityRequestCode = 1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener {
-            val intent = Intent(this@MainActivity, NewPartidoActivity::class.java)
-            startActivityForResult(intent, newWordActivityRequestCode)
-        }
+
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
         val adapter = PartidoAdapter(this)
@@ -45,6 +43,11 @@ class MainActivity : AppCompatActivity() {
         partidoViewModel.allPartidos.observe(this, Observer { partidos ->
             partidos?.let { adapter.setPartidos(it) }
         })
+
+        fab.setOnClickListener {
+            val intent = Intent(this@MainActivity, NewPartidoActivity::class.java)
+            startActivityForResult(intent, newPartidoActivityRequestCode)
+        }
 
     }
 
@@ -64,14 +67,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
+        super.onActivityResult(requestCode, resultCode, intentData)
 
-        if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK){
-            data?.let {
+        if (requestCode == newPartidoActivityRequestCode && resultCode == Activity.RESULT_OK){
+            intentData?.let { data ->
 
                 //Aqui es donde debo pasar los datos de los put extra
-                val partido = Partido(1,it.getStringExtra(NewPartidoActivity.EXTRA_REPLY),"ascaf",23,32)
+                val partido = Partido(1,data.getStringExtra(NewPartidoActivity.EXTRA_REPLY),"ascaf",23,32)
                 partidoViewModel.insertPartido(partido)
             }
 

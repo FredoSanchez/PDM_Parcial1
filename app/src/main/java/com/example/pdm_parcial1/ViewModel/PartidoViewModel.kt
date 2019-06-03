@@ -3,7 +3,6 @@ package com.example.pdm_parcial1.ViewModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pdm_parcial1.Database.PartidoRoomDatabase
 import com.example.pdm_parcial1.Entities.Partido
@@ -19,7 +18,7 @@ class PartidoViewModel(application: Application) : AndroidViewModel(application)
     init {
         val partidosDao = PartidoRoomDatabase.getDatabase(application, viewModelScope).partidoDao()
         partidoRepository = PartidoRepository(partidosDao)
-        allPartidos = partidoRepository.allPartido
+        allPartidos = partidoRepository.allPartidos
     }
 
     fun insertPartido(partido: Partido) = viewModelScope.launch(Dispatchers.IO){

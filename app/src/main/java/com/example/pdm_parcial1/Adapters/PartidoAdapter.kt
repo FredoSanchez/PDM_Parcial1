@@ -35,7 +35,6 @@ class PartidoAdapter internal constructor(context: Context) : RecyclerView.Adapt
         notifyDataSetChanged()
     }
 
-    override fun getItemCount(): Int {
-        return partidos.size
-    }
+    override fun getItemCount(): Int = partidos.size
+
 }

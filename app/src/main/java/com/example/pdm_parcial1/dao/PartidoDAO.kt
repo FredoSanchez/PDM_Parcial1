@@ -9,7 +9,7 @@ import com.example.pdm_parcial1.Entities.Partido
 @Dao
 interface PartidoDAO {
     @Query("SELECT * FROM table_partido order by Id_Partido ASC")
-    fun getAllPartido (): LiveData<List<Partido>>
+    fun getAllPartidos (): LiveData<List<Partido>>
 
     //@Query("SELECT * FROM table_partido WHERE Id_Partido = :idPartido")
     //fun getPartidoById(idPartido: Int): LiveData<List<Partido>>
@@ -18,5 +18,5 @@ interface PartidoDAO {
     suspend fun insertPartido(partido : Partido)
 
     @Query("DELETE FROM table_partido")
-    fun deleteAllPartido()
+    fun deleteAllPartidos()
 }

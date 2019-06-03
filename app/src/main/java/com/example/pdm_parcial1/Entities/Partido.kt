@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity (tableName = "table_partido")
-class Partido(
+data class Partido(
     @PrimaryKey @ColumnInfo(name = "Id_Partido") val Id_Partido: Int,
     @ColumnInfo(name = "EquipoA") val EquipoA: String,
     @ColumnInfo(name = "EquipoB") val EquipoB: String,
